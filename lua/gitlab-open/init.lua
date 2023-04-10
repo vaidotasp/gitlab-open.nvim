@@ -10,7 +10,7 @@ vim.api.nvim_create_user_command(
     function(input)
         print "Something should happen here..."
         local url = "https://www.google.com"
-        vim.cmd('exec "!open" .. url')
+        vim.cmd('exec "!open" \'' .. url .. '\'"')
     end,
     {bang = true, desc = 'a new command to do the thing'}
 )
