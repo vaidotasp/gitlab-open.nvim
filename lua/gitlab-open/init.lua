@@ -35,6 +35,31 @@ local function getURL(file, line)
     return repoURL .. get_git_branch() .. "/" .. file .. "#L" .. line
 end
 
+-- local function get_project_path()
+--     local current_path = vim.api.nvim_buf_get_name(0)
+--     local git_root = vim.fn.systemlist({'git', '-C', current_path, 'rev-parse', '--show-toplevel'})[1]
+
+--     if git_root == nil or git_root == '' then
+--         return vim.fn.fnamemodify(current_path, ':p:h')
+--     end
+--     return git_root
+-- end
+
+-- local function get_current_buffer_project_path()
+--   -- Get the current buffer file path
+--   local current_path = vim.api.nvim_buf_get_name(0)
+
+--   -- Get the project root path
+--   local project_path = get_project_path()
+
+--   -- Get the relative path from the project root
+
+--     print(project_path)
+--   -- local rel_path = current_path:gsub('^' .. project_path .. '/', '')
+
+--   return project_path .. '/' 
+-- end
+
 
 
 vim.api.nvim_create_user_command(
@@ -49,10 +74,11 @@ vim.api.nvim_create_user_command(
         local line = get_current_buffer_line()
         -- local vis = get_visual_range()
         local url = getURL(file, line)
-        print(url)
+        -- print(url)
         --open the URL
         local cmd = 'silent exec "' .. url_opener_command .. ' \'' .. url .. '\'"'
-        vim.cmd(cmd)
+        print(cmd)
+        -- vim.cmd(cmd)
     end,
     { bang = true, desc = 'a new command to do the thing' }
 )
