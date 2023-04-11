@@ -78,7 +78,7 @@ vim.api.nvim_create_user_command(
         --open the URL
         local cmd = 'silent exec "' .. url_opener_command .. ' \'' .. url .. '\'"'
         print(cmd)
-        -- vim.cmd(cmd)
+        vim.cmd(cmd)
     end,
     { bang = true, desc = 'a new command to do the thing' }
 )
