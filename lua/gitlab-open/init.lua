@@ -1,10 +1,13 @@
 -- this should be based on config
-local repoURL = "https://gitlab.com/remote-com/employ-starbase/dragon/blob/"
+RepoURL = ""
 
--- TODO: accept params in the future. For
+-- TODO: accept other params in the future. For
 -- example GitHub or Gitlab
 local function setup(params)
-    print(params)
+    if params.repo_url == '' then
+        print('setup missing: "repo_url"')
+    end
+    RepoURL = params.repo_url
 end
 
 -- TODO: Check if we are in a file or a scratch buffer, if buf -> exit
@@ -36,7 +39,7 @@ local function get_git_branch()
 end
 
 local function getURL(file, line)
-    return repoURL .. get_git_branch() .. "/" .. file .. "#L" .. line
+    return RepoURL .. get_git_branch() .. "/" .. file .. "#L" .. line
 end
 
 vim.api.nvim_create_user_command(
@@ -47,7 +50,7 @@ vim.api.nvim_create_user_command(
         local url = getURL(file, line)
         --open the URL
         local cmd = 'open ' .. url
-        os.execute(cmd) -- using os.execute instead of exec !open to prevent weird URL manipulation when it comes to symbols like "#"
+        -- os.execute(cmd) -- using os.execute instead of exec !open to prevent weird URL manipulation when it comes to symbols like "#"
     end,
     { bang = true, desc = 'open file and line number in GitLab UI' }
 )
