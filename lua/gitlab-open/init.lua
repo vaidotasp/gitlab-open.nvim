@@ -50,7 +50,7 @@ vim.api.nvim_create_user_command(
         local url = getURL(file, line)
         --open the URL
         local cmd = 'open ' .. url
-        -- os.execute(cmd) -- using os.execute instead of exec !open to prevent weird URL manipulation when it comes to symbols like "#"
+        os.execute(cmd) -- using os.execute instead of exec !open to prevent weird URL manipulation when it comes to symbols like "#"
     end,
     { bang = true, desc = 'open file and line number in GitLab UI' }
 )
