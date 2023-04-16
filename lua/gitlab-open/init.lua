@@ -10,6 +10,11 @@ end
 -- TODO: Check if we are in a file or a scratch buffer, if buf -> exit
 local function get_current_file_path()
     local path = vim.fn.expand('%')
+    if path == '' or vim.fn.filereadable(path) ~= 1 then
+        print('empty buffer')
+        -- maybe less intrusive feedback than error needed
+        error('empty buffer')
+    end
     return path
 end
 
@@ -20,7 +25,7 @@ end
 
 -- TODO implement ranges, so we can open and select L1->L23 in GL UI
 local function get_visual_range()
-    local    line1 = vim.api.nvim_buf_get_mark(0, "<")[1]
+    local line1 = vim.api.nvim_buf_get_mark(0, "<")[1]
     local line2 = vim.api.nvim_buf_get_mark(0, ">")[1]
     return { line1, line2 }
 end
@@ -41,11 +46,10 @@ vim.api.nvim_create_user_command(
         local line = get_current_buffer_line()
         local url = getURL(file, line)
         --open the URL
-        -- os.execute('open https://gitlab.com/remote-com/employ-starbase/dragon/-/blob/master/jsconfig.json#L4')
         local cmd = 'open ' .. url
         os.execute(cmd) -- using os.execute instead of exec !open to prevent weird URL manipulation when it comes to symbols like "#"
     end,
-    { bang = true, desc = 'a new command to do the thing' }
+    { bang = true, desc = 'open file and line number in GitLab UI' }
 )
 
 return {
